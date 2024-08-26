@@ -73,18 +73,14 @@ class Timetable:
         return {k: self.times[k].strftime("%H:%M") for k in self.times.keys()}
 
     def get_time_remaining(self):
-        # print(self.current_prayer, self.next_prayer)
         time = now
         next_prayer_time = datetime.combine(self.day, self.times[self.next_prayer])
-        # print(next_prayer_time)
 
         # If next prayer time has passed, this is an edge case where we set it to tomorrow's Fajr
         if next_prayer_time < time:
-            # print("yes")
             next_prayer_time += timedelta(days=1)
 
         diff = next_prayer_time - time
-        # print(diff)
         if diff.total_seconds() <= 1:
             self.set_current_and_next_prayer()
 

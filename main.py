@@ -7,7 +7,6 @@ eel.init("web")
 
 @eel.expose
 def new_day():
-    print("called")
     timetable.t = timetable.Timetable()
     eel.set_date(timetable.t.get_date())
 
@@ -20,7 +19,6 @@ def secs():
         eel.set_time(current_time.strftime("%H:%M:%S"))
         eel.set_time_remaining(timetable.t.get_time_remaining())
         if timetable.t.updated:
-            # print("updating")
             eel.update_tiles(
                 timetable.t.get_table(),
                 timetable.t.current_prayer,

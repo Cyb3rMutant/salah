@@ -2,21 +2,16 @@ eel.new_day();
 
 eel.expose(update_tiles);
 function update_tiles(table, current_prayer) {
-  // console.log(table, current_prayer);
-  // console.log(table);
   var before = 1;
   for (var key in table) {
     var e = document.getElementById(key);
     e.innerHTML = table[key];
     if (key == current_prayer) {
-      // console.log(e, e.parentElement);
       e.parentElement.parentElement.style.backgroundColor = "#75A297";
       before = 0;
     } else if (before == 1) {
-      // console.log(e, e.parentElement);
       e.parentElement.parentElement.style.backgroundColor = "#FF4E60";
     } else {
-      // console.log(e, e.parentElement);
       e.parentElement.parentElement.style.backgroundColor = "#E3AE7A";
     }
   }
