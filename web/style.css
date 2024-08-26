@@ -1,0 +1,69 @@
+@font-face {
+  font-family: bold-isoc-font;
+  src: url(fonts/Montserrat-ExtraBold.ttf);
+}
+
+@font-face {
+  font-family: normal-isoc-font;
+  src: url(fonts/Montserrat-Medium.ttf);
+}
+
+body {
+  font-family: normal-isoc-font;
+  font-size: 50px;
+}
+
+.container {
+  display: flex;
+  border: 2px solid black;
+  width: 98vw;
+  height: 98vh;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.left-column {
+  flex: 2;
+  border-right: 2px solid black;
+}
+
+.right-column {
+  flex: 1;
+}
+
+.prayer-time {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+
+.curr-time,
+.time-remaining {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid black;
+}
+
+.prayer-time:last-child,
+.time-remaining {
+  border-bottom: none;
+}

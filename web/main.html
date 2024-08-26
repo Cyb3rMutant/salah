@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prayer Times</title>
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="left-column">
+      <div class="prayer-time">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span style="font-family: bold-isoc-font">Fajr:</span>
+          <br />
+          <div id="Fajr"></div>
+        </div>
+      </div>
+      <div class="prayer-time" style="display: none">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span style="font-family: bold-isoc-font">Sunrise:</span>
+          <br />
+          <div id="Sunrise"></div>
+        </div>
+      </div>
+      <div class="prayer-time">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span style="font-family: bold-isoc-font">Dhuhr:</span>
+          <br />
+          <div id="Dhuhr"></div>
+        </div>
+      </div>
+      <div class="prayer-time">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span style="font-family: bold-isoc-font">Asr:</span>
+          <br />
+          <div id="Asr"></div>
+        </div>
+      </div>
+      <div class="prayer-time">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span style="font-family: bold-isoc-font">Maghrib:</span>
+          <br />
+          <div id="Maghrib"></div>
+        </div>
+      </div>
+      <div class="prayer-time">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span style="font-family: bold-isoc-font">Isha:</span>
+          <br />
+          <div id="Isha"></div>
+        </div>
+      </div>
+    </div>
+    <div class="right-column">
+      <div class="logo">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <img src="img/logo.jpg" alt="Logo" style="max-width: 50%; max-height: 50%" />
+          <span style="font-family: bold-isoc-font">uwe.isoc.link</span>
+        </div>
+      </div>
+      <div id="curr-time" class="curr-time">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span id="date"></span><br />
+          <span id="time"></span>
+        </div>
+      </div>
+      <div class="time-remaining">
+        <div style="display: flex align-items: center; justify-content: center;">
+          <span id="time-remaining"></span>
+          <br />
+          remaining
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
