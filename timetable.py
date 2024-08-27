@@ -15,7 +15,7 @@ def is_start_of_month(dt):
     return yesterdays_month != todays_month
 
 
-now = datetime.now()
+now = datetime.now()  # + timedelta(days=5, hours=11)
 
 
 class Monthly_table:
@@ -35,7 +35,7 @@ class Monthly_table:
             self.next_table = self.init_table(
                 (date + timedelta(days=1)).strftime("%m_%y")
             )
-        if is_start_of_month(date) and self.next_table != None:
+        if is_start_of_month(date) and self.next_table is not None:
             self.table = self.next_table
             self.next_table = None
         return self.table.iloc[date.day - 1]
@@ -67,7 +67,7 @@ class Timetable:
         )
 
     def get_date(self) -> str:
-        return self.day.strftime("%A<br/>%d/%m")
+        return self.day.strftime("%A\n%d/%m")
 
     def get_table(self) -> Dict[str, int]:
         return {k: self.times[k].strftime("%H:%M") for k in self.times.keys()}

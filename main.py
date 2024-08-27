@@ -27,7 +27,9 @@ def secs():
         eel.sleep(1)
 
 
-eel.spawn(secs)
+# eel.spawn(secs)
 
 
-eel.start("main.html", mode="chrome")
+eel.start("main.html", mode="chrome", block=False)
+
+secs()
