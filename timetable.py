@@ -35,7 +35,7 @@ class Monthly_table:
             self.next_table = self.init_table(
                 (date + timedelta(days=1)).strftime("%m_%y")
             )
-        if is_start_of_month(date):
+        if is_start_of_month(date) and self.next_table != None:
             self.table = self.next_table
             self.next_table = None
         return self.table.iloc[date.day - 1]
