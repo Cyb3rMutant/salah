@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Dict
 import pandas as pd
+import os
+
+dirname = os.path.dirname(__file__)
 
 
 def is_end_of_month(dt):
@@ -25,7 +28,7 @@ class Monthly_table:
 
     def init_table(self, file):
         return (
-            pd.read_csv("./prayers/" + file + ".csv")
+            pd.read_csv(os.path.join(dirname, "prayers/" + file + ".csv"))
             .drop(columns=["Date"])
             .rename(columns={"Asar": "Asr"})
         ).apply(lambda col: pd.to_datetime(col, format="%H:%M").dt.time)

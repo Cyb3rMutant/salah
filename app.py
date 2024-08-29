@@ -12,6 +12,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import QTimer, Qt
 import timetable
+import os
+
+dirname = os.path.dirname(__file__)
 
 prayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
 
@@ -70,7 +73,7 @@ class MyApp(QWidget):
         # Load the first TTF font (Regular)
         font_db = QFontDatabase()
         font_id1 = font_db.addApplicationFont(
-            "./web/fonts/Montserrat-Medium.ttf"
+            os.path.join(dirname, "web/fonts/Montserrat-Medium.ttf")
         )  # Update this path
         font_family1 = font_db.applicationFontFamilies(font_id1)[0]
         self.isoc_font_medium = QFont(font_family1)
@@ -78,7 +81,7 @@ class MyApp(QWidget):
 
         # Load the second TTF font (ExtraBold)
         font_id2 = font_db.addApplicationFont(
-            "./web/fonts/Montserrat-ExtraBold.ttf"
+            os.path.join(dirname, "web/fonts/Montserrat-ExtraBold.ttf")
         )  # Update this path
         font_family2 = font_db.applicationFontFamilies(font_id2)[0]
         self.isoc_font_extrabold = QFont(font_family2)
@@ -167,7 +170,7 @@ class MyApp(QWidget):
         # Add the logo
         logo_label = QLabel(self)
         pixmap = QPixmap(
-            "./web/img/logo.png"
+            os.path.join(dirname, "web/img/logo.png")
         )  # Replace with the path to your logo file
         # pixmap = pixmap.scaled(200, 200)  # Scale to 50%
         logo_label.setPixmap(
