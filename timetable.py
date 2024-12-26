@@ -73,7 +73,7 @@ class Timetable:
         return self.day.strftime("%A\n%d/%m")
 
     def get_table(self) -> Dict[str, int]:
-        return {k: self.times[k].strftime("%H:%M") for k in self.times.keys()}
+        return {k: self.times[k] for k in self.times.keys()}
 
     def get_time_remaining(self):
         time = now
