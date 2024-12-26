@@ -1,5 +1,20 @@
 import RPi.GPIO as GPIO
 import tm1637
+import datetime
+
+
+class Timer:
+    def __init__(self, clk, dio) -> None:
+        self.time = tm1637.TM1637(clk=clk, dio=dio)
+
+    def set_time(self, time):
+        self.time.numbers(time.hour, time.minute)
+
+
+curr_time = Timer(11, 7)
+rem_time = Timer(8, 25)
+# curr_time.set_time(datetime.datetime.now())
+rem_time.set_time(datetime.datetime.now())
 
 
 class RGBLed:
@@ -64,22 +79,33 @@ class RGBLed:
 
 
 class Prayer:
-    def __init__(self, clk, dio, red, green) -> None:
+    def __init__(self, clk=None, dio=None, red=None, green=None) -> None:
+        if not all([clk, dio, red, green]):
+            self.dummy = True
+            return
+        self.dummy = False
+
         self.time = tm1637.TM1637(clk=clk, dio=dio)
-        self.time.numbers(clk, dio)
         self.light = RGBLed(red, green)
-        self.light.go_red()
 
     def set_time(self, time):
+        if self.dummy:
+            return
         self.time.numbers(time.hour, time.minute)
 
     def red(self):
+        if self.dummy:
+            return
         self.light.go_red()
 
     def green(self):
+        if self.dummy:
+            return
         self.light.go_green()
 
     def yellow(self):
+        if self.dummy:
+            return
         self.light.go_yellow()
 
 

@@ -3,8 +3,10 @@ from datetime import timedelta
 import timetable
 import time
 
+curr_time = Timer(11, 7)
+rem_time = Timer(8, 25)
 
-digital_clocks = {}
+digital_clocks = {"Sunrise": Prayer()}
 digital_clocks["Fajr"] = Prayer(27, 22, 10, 9)
 digital_clocks["Dhuhr"] = Prayer(2, 3, 20, 21)
 digital_clocks["Asr"] = Prayer(15, 14, 16, 19)
@@ -20,8 +22,8 @@ def run():
     # current_time = timetable.now = datetime.now()
     if current_time.hour == current_time.minute == current_time.second == 0:
         new_day()
-    # time_label.setText(current_time.strftime("%H:%M:%S"))
-    # time_remaining_label.setText(timetable.t.get_time_remaining())
+    curr_time.set_time(current_time)
+    rem_time.set_time(timetable.t.get_time_remaining())
     if timetable.t.updated:
         update_labels()
         timetable.t.updated = False
@@ -37,19 +39,19 @@ def update_labels():
     curr = timetable.t.current_prayer
     before = 1
     for p in prayers:
-        digital_clocks[p].set_time(updated_values[p], colon=True)
-        print(p, before, curr)
+        digital_clocks[p].set_time(updated_values[p])
+        # print(p, before, curr)
         if p == curr:
-            prayers[p].green()
+            digital_clocks[p].green()
             before = 0
         elif before == 1:
-            prayers[p].red()
+            digital_clocks[p].red()
         else:
-            prayers[p].yellow()
+            digital_clocks[p].yellow()
 
 
 if __name__ == "__main__":
     new_day()
     while 1:
         run()
-        time.sleep(1)
+        # time.sleep(0.000000000000000000000001)

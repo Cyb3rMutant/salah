@@ -87,7 +87,9 @@ class Timetable:
         if diff.total_seconds() <= 1:
             self.set_current_and_next_prayer()
 
-        return str(diff).split(".")[0]
+        # print(diff, type(diff), str(diff).split(".")[0])
+        # return str(diff).split(".")[0]
+        return datetime(1, 1, 1, diff.seconds // 3600, (diff.seconds // 60) % 60)
 
 
 t = Timetable()
