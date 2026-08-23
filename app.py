@@ -1,18 +1,14 @@
-from datetime import datetime, timedelta
-import sys
-from typing import Dict
-from PyQt5.QtGui import QFont, QFontDatabase, QPixmap
-from PyQt5.QtWidgets import (
-    QApplication,
-    QHBoxLayout,
-    QSizePolicy,
-    QWidget,
-    QLabel,
-    QVBoxLayout,
-)
-from PyQt5.QtCore import QTimer, Qt
-import timetable
 import os
+import sys
+from datetime import datetime, timedelta
+from typing import Dict
+
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QFont, QFontDatabase, QPixmap
+from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QSizePolicy,
+                             QVBoxLayout, QWidget)
+
+import timetable_v1 as timetable
 
 dirname = os.path.dirname(__file__)
 
@@ -55,11 +51,11 @@ class MyApp(QWidget):
         self.setLayout(main_layout)
 
         # Set the window title and size
-        self.setWindowTitle("PyQt5 Prayer Times Example")
+        self.setWindowTitle("PyQt6 Prayer Times Example")
         self.setGeometry(
             300, 300, 600, 400
         )  # Adjusted width and height for a balanced layout
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.showFullScreen()
 
         # Set up a timer to update the labels periodically
@@ -70,25 +66,38 @@ class MyApp(QWidget):
         self.new_day()
 
     def init_fonts(self):
-        # Load the first TTF font (Regular)
-        font_db = QFontDatabase()
-        font_id1 = font_db.addApplicationFont(
+        # Load Montserrat Medium
+        font_id1 = QFontDatabase.addApplicationFont(
             os.path.join(dirname, "web/fonts/Montserrat-Medium.ttf")
-        )  # Update this path
-        font_family1 = font_db.applicationFontFamilies(font_id1)[0]
-        self.isoc_font_medium = QFont(font_family1)
-        self.isoc_font_medium.setPointSize(40)  # Set the desired font size
+        )
 
-        # Load the second TTF font (ExtraBold)
-        font_id2 = font_db.addApplicationFont(
+        if font_id1 == -1:
+            raise RuntimeError("Failed to load Montserrat-Medium.ttf")
+
+        families1 = QFontDatabase.applicationFontFamilies(font_id1)
+        if not families1:
+            raise RuntimeError("No font family found for Montserrat-Medium.ttf")
+
+        font_family1 = families1[0]
+        self.isoc_font_medium = QFont(font_family1)
+        self.isoc_font_medium.setPointSize(40)
+
+        # Load Montserrat ExtraBold
+        font_id2 = QFontDatabase.addApplicationFont(
             os.path.join(dirname, "web/fonts/Montserrat-ExtraBold.ttf")
-        )  # Update this path
-        font_family2 = font_db.applicationFontFamilies(font_id2)[0]
+        )
+
+        if font_id2 == -1:
+            raise RuntimeError("Failed to load Montserrat-ExtraBold.ttf")
+
+        families2 = QFontDatabase.applicationFontFamilies(font_id2)
+        if not families2:
+            raise RuntimeError("No font family found for Montserrat-ExtraBold.ttf")
+
+        font_family2 = families2[0]
         self.isoc_font_extrabold = QFont(font_family2)
-        self.isoc_font_extrabold.setPointSize(40)  # Set the desired font size
-        self.isoc_font_extrabold.setWeight(
-            QFont.ExtraBold
-        )  # Set the weight to ExtraBold
+        self.isoc_font_extrabold.setPointSize(40)
+        self.isoc_font_extrabold.setWeight(QFont.Weight.ExtraBold)
 
         return self.isoc_font_medium, self.isoc_font_extrabold
 
@@ -128,8 +137,14 @@ class MyApp(QWidget):
 
         # self.prayers[prayer].parent.setHidden(1)
 
-        entry_layout.addWidget(name_label, alignment=Qt.AlignBottom | Qt.AlignCenter)
-        entry_layout.addWidget(time_label, alignment=Qt.AlignTop | Qt.AlignCenter)
+        entry_layout.addWidget(
+            name_label,
+            alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignCenter,
+        )
+        entry_layout.addWidget(
+            time_label,
+            alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter,
+        )
 
         if prayer == "Sunrise":
             self.prayers[prayer].parent().setHidden(1)
@@ -174,16 +189,21 @@ class MyApp(QWidget):
         )  # Replace with the path to your logo file
         # pixmap = pixmap.scaled(200, 200)  # Scale to 50%
         logo_label.setPixmap(
-            pixmap.scaled(300, 300, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap.scaled(
+                300,
+                300,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
         )
         # logo_label.setScaledContents(True)
-        logo_label.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        logo_label.setAlignment(Qt.AlignCenter)
+        logo_label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
+        logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         logo_layout.addWidget(logo_label, 4)
 
         logo_text = QLabel("uwe.isoc.link", self)
         logo_text.setFont(self.isoc_font_extrabold)
-        logo_layout.addWidget(logo_text, 1, alignment=Qt.AlignCenter)
+        logo_layout.addWidget(logo_text, 1, alignment=Qt.AlignmentFlag.AlignCenter)
 
         return logo_widget
 
@@ -203,14 +223,16 @@ class MyApp(QWidget):
         self.date_label = QLabel("Date: ", self)
         self.date_label.setFont(self.isoc_font_medium)
         date_time_layout.addWidget(
-            self.date_label, alignment=Qt.AlignBottom | Qt.AlignCenter
+            self.date_label,
+            alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignCenter,
         )
 
         # Add the current time
         self.time_label = QLabel("Time: ", self)
         self.time_label.setFont(self.isoc_font_medium)
         date_time_layout.addWidget(
-            self.time_label, alignment=Qt.AlignTop | Qt.AlignCenter
+            self.time_label,
+            alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter,
         )
 
         return date_time_widget
@@ -219,7 +241,7 @@ class MyApp(QWidget):
         # Add the remaining time
         time_remaining_label = QLabel("Time remaining: ", self)
         time_remaining_label.setStyleSheet("border: 2px solid black;")
-        time_remaining_label.setAlignment(Qt.AlignCenter)
+        time_remaining_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         time_remaining_label.setFont(self.isoc_font_extrabold)
         return time_remaining_label
 
@@ -264,4 +286,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = MyApp()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
