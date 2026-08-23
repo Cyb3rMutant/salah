@@ -1,57 +1,34 @@
-import os
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from typing import Dict
 
-import pandas as pd
+from generator import get_prayer_times
 
-dirname = os.path.dirname(__file__)
-
-
-def is_end_of_month(dt):
-    todays_month = dt.month
-    tomorrows_month = (dt + timedelta(days=1)).month
-    return tomorrows_month != todays_month
-
-
-def is_start_of_month(dt):
-    todays_month = dt.month
-    yesterdays_month = (dt - timedelta(days=1)).month
-    return yesterdays_month != todays_month
-
+# Maps the app's prayer names to generator.py's output keys.
+# "asr shafi" matches the convention the old salahtimes.com CSVs used (acm=1).
+PRAYER_KEYS = {
+    "Fajr": "fajr",
+    "Sunrise": "sunrise",
+    "Dhuhr": "dhuhr",
+    "Asr": "asr shafi",
+    "Maghrib": "maghrib",
+    "Isha": "isha",
+}
 
 now = datetime.now()  # + timedelta(days=5, hours=11)
 
 
-class Monthly_table:
-    def __init__(self, file) -> None:
-        self.table = self.init_table(file)
-        self.next_table = None
-
-    def init_table(self, file):
-        return (
-            pd.read_csv(os.path.join(dirname, "prayers/" + file + ".csv"))
-            .drop(columns=["Date"])
-            .rename(columns={"Asar": "Asr"})
-        ).apply(lambda col: pd.to_datetime(col, format="%H:%M").dt.time)
-
-    def get_daily_table(self, date) -> pd.Series:
-        if is_end_of_month(date):
-            self.next_table = self.init_table(
-                (date + timedelta(days=1)).strftime("%m_%y")
-            )
-        if is_start_of_month(date) and self.next_table is not None:
-            self.table = self.next_table
-            self.next_table = None
-        return self.table.iloc[date.day - 1]
-
-
-month = Monthly_table(now.strftime("%m_%y"))
+def get_daily_table(date) -> Dict[str, time]:
+    raw = get_prayer_times(date)
+    return {
+        name: datetime.strptime(raw[key], "%H:%M").time()
+        for name, key in PRAYER_KEYS.items()
+    }
 
 
 class Timetable:
     def __init__(self) -> None:
         self.day = now.date()
-        self.times = month.get_daily_table(self.day)
+        self.times = get_daily_table(self.day)
         self.set_current_and_next_prayer()
 
     def set_current_and_next_prayer(self):
@@ -73,7 +50,7 @@ class Timetable:
     def get_date(self) -> str:
         return self.day.strftime("%A\n%d/%m")
 
-    def get_table(self) -> Dict[str, int]:
+    def get_table(self) -> Dict[str, str]:
         return {k: self.times[k].strftime("%H:%M") for k in self.times.keys()}
 
     def get_time_remaining(self):
